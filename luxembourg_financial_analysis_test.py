@@ -1,4 +1,8 @@
-import pandas as pd
+# Rewriting the Python script to a file
+
+file_path = "/mnt/data/luxembourg_financial_analysis_test.py"
+
+code_content = """import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,7 +13,7 @@ mock_balance_sheet = pd.DataFrame({
 })
 
 mock_income_statement = pd.DataFrame({
-    'Nom': ['Chiffre d'affaires', 'Résultat Net', 'Charges Totales'],
+    'Nom': ['Chiffre d\'affaires', 'Résultat Net', 'Charges Totales'],
     'Valeur': [600000, 50000, 550000]
 })
 
@@ -24,7 +28,7 @@ class LuxembourgFinancialAnalysisTest:
         try:
             self.analysis_results['Liquidité générale'] = self.balance_sheet.loc['Actifs Courants', 'Valeur'] / self.balance_sheet.loc['Passifs Courants', 'Valeur']
             self.analysis_results['Autonomie financière'] = self.balance_sheet.loc['Capitaux Propres', 'Valeur'] / self.balance_sheet.loc['Total du Bilan', 'Valeur']
-            self.analysis_results['Rentabilité nette'] = self.income_statement.loc['Résultat Net', 'Valeur'] / self.income_statement.loc['Chiffre d'affaires', 'Valeur']
+            self.analysis_results['Rentabilité nette'] = self.income_statement.loc['Résultat Net', 'Valeur'] / self.income_statement.loc['Chiffre d\'affaires', 'Valeur']
             self.analysis_results['Rentabilité des capitaux propres'] = self.income_statement.loc['Résultat Net', 'Valeur'] / self.balance_sheet.loc['Capitaux Propres', 'Valeur']
             self.analysis_results['Endettement global'] = self.balance_sheet.loc['Dettes Totales', 'Valeur'] / self.balance_sheet.loc['Capitaux Propres', 'Valeur']
         except KeyError as e:
@@ -34,7 +38,7 @@ class LuxembourgFinancialAnalysisTest:
         return self.analysis_results
 
     def visualize_ratios(self):
-        """Affiche un graphique des ratios financiers"""
+        \"\"\"Affiche un graphique des ratios financiers\"\"\"
         if not self.analysis_results:
             return "Aucun ratio calculé."
         
@@ -53,3 +57,10 @@ if __name__ == "__main__":
     # Affichage des résultats
     print(ratios_test)
     analyzer_test.visualize_ratios()
+"""
+
+# Write the file
+with open(file_path, "w") as f:
+    f.write(code_content)
+
+file_path
