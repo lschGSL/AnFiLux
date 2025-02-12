@@ -1,10 +1,12 @@
-# Rewriting the Python script to a file
+# Rewriting the Python script after execution state reset
 
 file_path = "/mnt/data/luxembourg_financial_analysis_test.py"
 
 code_content = """import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import streamlit as st
+import io
 
 # Simulation d'une extraction de données depuis un fichier Excel
 mock_balance_sheet = pd.DataFrame({
@@ -47,16 +49,37 @@ class LuxembourgFinancialAnalysisTest:
         plt.ylabel("Valeurs des ratios")
         plt.xticks(rotation=45)
         plt.title("Visualisation des Ratios Financiers")
-        plt.show()
+        st.pyplot(plt)
 
-# Exécution du test
-if __name__ == "__main__":
+    def export_results(self):
+        \"\"\"Génère un fichier téléchargeable sans l’écrire sur disque\"\"\"
+        df_results = pd.DataFrame(list(self.analysis_results.items()), columns=['Ratio', 'Valeur'])
+        output = io.BytesIO()
+        df_results.to_excel(output, index=False, engine='xlsxwriter')
+        output.seek(0)
+        
+        st.download_button(
+            label="Télécharger les résultats",
+            data=output,
+            file_name="analyse_financiere.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+# Interface utilisateur avec Streamlit
+st.title("Analyse Financière des Comptes Annuels")
+
+if st.button("Exécuter l'analyse"):
     analyzer_test = LuxembourgFinancialAnalysisTest(mock_balance_sheet, mock_income_statement)
+    
+    st.write("Calcul des ratios financiers...")
     ratios_test = analyzer_test.calculate_ratios()
-
-    # Affichage des résultats
-    print(ratios_test)
+    st.write(ratios_test)
+    
+    st.write("Visualisation des ratios financiers...")
     analyzer_test.visualize_ratios()
+    
+    st.write("Export des résultats...")
+    analyzer_test.export_results()
 """
 
 # Write the file
