@@ -1,0 +1,12 @@
+import os
+
+file_path = "data/output.txt"  # Remplace par ton chemin réel
+
+# Vérifier si le dossier existe
+directory = os.path.dirname(file_path)  # Récupère le dossier du fichier
+if not os.path.exists(directory):  # Vérifie si le dossier existe
+    os.makedirs(directory)  # Crée le dossier s'il n'existe pas
+
+# Maintenant, on peut ouvrir le fichier en toute sécurité
+with open(file_path, "w") as f:
+    f.write("Test de création de fichier réussi !")
